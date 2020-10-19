@@ -11,7 +11,6 @@ const App = () => {
   return (
     <MovieProvider>
       <Nav />
-      
       <Switch>
         <Route path="/" exact component={MoviesList} />
         <Route path="/movie-card/:id" component={MovieCard} />

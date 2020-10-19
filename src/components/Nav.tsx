@@ -165,7 +165,7 @@ const PrimarySearchAppBar = () => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static" style={{ background: "#39322b" }}>
+      <AppBar position="static" style={{ background: "rgb(16 15 14)" }}>
         <Toolbar>
           <IconButton
             edge="start"
