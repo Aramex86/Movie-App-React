@@ -46,10 +46,7 @@ const movieWrap = {
   color: "#fff",
 };
 
-const imgStyle = {
-  width: "90%",
-  
-};
+
 
 const summary = {
   width: "80%",
@@ -88,8 +85,7 @@ console.log(actors);
           <div style={{width:'30%',display:'flex',justifyContent:'center'}}>
             <img
               src={"https://image.tmdb.org/t/p/w500/" + item.poster_path}
-              style={imgStyle}
-            />
+            style={{objectFit:'cover',width:'80%',height:'80%'}}/>
           </div>
           <div style={{ width: "60%", position: "relative" }}>
             <h2 style={{ width: "100%", textAlign: "center", margin: "0" }}>
@@ -117,10 +113,11 @@ console.log(actors);
                 <li>
                   <span style={{ fontWeight: "bold" }}>genre</span>
                 </li>
-                <li>
-      <span style={{ fontWeight: "bold" }}>Actors :</span> {actors?.map(m => <span style={{marginLeft:'10px'}}>{m.name}</span>)}
+                <li style={{marginBottom:'20px'}}>
+      <span style={{ fontWeight: "bold" }}>Actors :</span> {actors?.map(m => <span style={{marginLeft:'10px'}} key={m.cast_id}>{m.name}</span>)}
                 </li>
               </ul>
+              <div style={{marginBottom:'1rem'}}>{actors?.slice(0,5).map(p=> <img key={p.cast_id} src={"https://image.tmdb.org/t/p/w500/"+ p.profile_path} alt='poster' style={{width:'15%',marginRight:'10px'}}/>)}</div>
               <p
                 style={{
                   margin: "0",
