@@ -85,7 +85,7 @@ console.log(actors);
           <div style={{width:'30%',display:'flex',justifyContent:'center'}}>
             <img
               src={"https://image.tmdb.org/t/p/w500/" + item.poster_path}
-            style={{objectFit:'cover',width:'80%',height:'80%'}}/>
+            style={{objectFit:'cover',width:'85%',height:'70%'}}/>
           </div>
           <div style={{ width: "60%", position: "relative" }}>
             <h2 style={{ width: "100%", textAlign: "center", margin: "0" }}>
