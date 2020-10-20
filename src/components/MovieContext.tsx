@@ -17,7 +17,6 @@ export type IMovie = {
   adult: boolean;
   overview: string;
   poster_path: string;
-  moviesId:{}
 };
 
 type IMovieContext = [IMovie[], React.Dispatch<React.SetStateAction<IMovie[]>>];
@@ -26,14 +25,15 @@ export const MovieContext = createContext<IMovieContext>([[], () => null]);
 
 export const MovieProvider = (props: { children: any }) => {
   const [movies, setMovie] = useState<IMovie[]>([]);
-//console.log(movies)
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataMovies = async () => {
       const result = await getMoviesApi.getMovies();
       setMovie(result.results);
+      //console.log(result);
     };
-    fetchData();
+    fetchDataMovies();
   }, []);
+  
 
   return (
     <MovieContext.Provider value={[movies, setMovie]}>

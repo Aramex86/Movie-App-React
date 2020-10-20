@@ -11,17 +11,6 @@ import axios from "axios";
 //https://cors-anywhere.herokuapp.com/ ->corsanywhere
 //https://api.themoviedb.org/4/list/1?page=1&api_key=647b39ccfb59105c511c2df9019bc7ec&sort_by=title.asc";
 
-type CastType={
-    id:number
-    cast:Array<{}>
-    crew:Array<{}>
-}
-
-
-
-
-
-
 export const getMoviesApi = {
   getMovies() {
     return axios
@@ -41,4 +30,10 @@ export const getMoviesApi = {
         return res.data;
       });
   },
+  getGenre(){
+    return axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=647b39ccfb59105c511c2df9019bc7ec&language=en-US`).
+    then(res=>{
+      return res.data;
+    })
+  }
 };
