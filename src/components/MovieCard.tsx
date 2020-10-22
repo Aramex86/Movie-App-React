@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { MovieContext } from "./MovieContext";
+import { MovieContext, GenreContext } from "./MovieContext";
 import MovieCatdHeader from "./MovieCardHeader";
 
 import ThumbUpAltRoundedIcon from "@material-ui/icons/ThumbUpAltRounded";
@@ -10,14 +10,6 @@ type CastType = {
   id: number;
   cast: Array<ActorsType>;
   crew: [];
-};
-type GenreInsideType = {
-  id: number;
-  name: string;
-};
-
-type GenreType = {
-  genres: Array<GenreInsideType>;
 };
 
 type ActorsType = {
@@ -30,6 +22,11 @@ type ActorsType = {
   order: number;
   profile_path: string;
 };
+
+type GenresTypes={
+  id:number
+  name:string
+}
 
 //styles
 const divWrapStyle = {
@@ -54,12 +51,12 @@ const summary = {
 
 const MovieCard = ({ match }: any) => {
   const [movies, setMovie] = useContext(MovieContext);
+  const [genre, setGenre] = useContext(GenreContext);
   const [cast, setCast] = useState<CastType>();
-  const [genre, setGenre] = useState<GenreType>();
-
   const movieId = match.params.id;
   const moviesId = movies.filter((movie) => movie.id == movieId);
   const actors = cast?.cast.slice(0, 15);
+
   useEffect(() => {
     const fetchDataCast = async (movieId: number) => {
       const result = await getMoviesApi.getCast(movieId);
@@ -68,30 +65,25 @@ const MovieCard = ({ match }: any) => {
     fetchDataCast(movieId);
   }, [movieId]);
 
-  useEffect(() => {
-    const fetchDataGenre = async () => {
-      const result = await getMoviesApi.getGenre();
-      console.log(result);
-      setGenre(result);
-    };
-    fetchDataGenre();
-  }, []);
+  const genreArr =[...genre];
+  const genreIds =[...moviesId.map(el => Object.values(el.genre_ids)).flat()];
+  const genres:Array<GenresTypes>=[];
 
-  function objectsAreSame(x:any, y:any) {
-    var objectsAreSame = true;
-    for(var propertyName in x) {
-       if(x[propertyName] !== y[propertyName]) {
-          objectsAreSame = false;
-          break;
-       }
+   genreArr.filter(el=>{
+    for(let i=0;i<genreIds.length;i++){
+      if(genreIds[i] === el.id){
+        genres.push(el);
+      }
     }
-    return objectsAreSame;
- }
-
- console.log(objectsAreSame(genre?.genres,moviesId))
-
-  console.log("GENRE", genre?.genres);
-  console.log("MOVIESID", moviesId);
+  });
+  
+  console.log(genres);
+  
+  console.log('!!!',genreArr);
+  console.log('!!',genreIds);
+  
+  // console.log("MoviesId", moviesId);
+  // console.log('Genre',genre);
 
   return (
     <>
@@ -108,7 +100,7 @@ const MovieCard = ({ match }: any) => {
             >
               <img
                 src={"https://image.tmdb.org/t/p/w500/" + item.poster_path}
-                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                style={{ objectFit: "cover", width: "100%", height: "65%" }}
                 alt="poster"
               />
             </div>
@@ -119,11 +111,11 @@ const MovieCard = ({ match }: any) => {
               <div style={summary}>
                 <h2>{item.title}</h2>
                 <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
-                  <li>
+                  <li style={{padding:'.5rem 0'}}>
                     <span style={{ fontWeight: "bold" }}>Realese date : </span>{" "}
                     {item.release_date}
                   </li>
-                  <li>
+                  <li style={{padding:'.5rem 0'}}>
                     <span style={{ fontWeight: "bold" }}>raiting : </span>
                     {item.vote_average}
                     <ThumbUpAltRoundedIcon
@@ -134,13 +126,13 @@ const MovieCard = ({ match }: any) => {
                       }}
                     />
                   </li>
-                  <li>
+                  <li style={{padding:'.5rem 0'}}>
                     <span style={{ fontWeight: "bold" }}>total votes : </span>
                     {item.vote_count}
                   </li>
                   {item.adult ? <li>adult:18+</li> : ""}
-                  <li>
-                    <span style={{ fontWeight: "bold" }}>genre</span>
+                  <li style={{padding:'.5rem 0'}}>
+                    <span style={{ fontWeight: "bold" }}>genre : </span>{genres.map(g=><span key={g.id} style={{marginRight:'10px'}}>{g.name}</span>)}
                   </li>
                   <li style={{ marginBottom: "20px" }}>
                     <span style={{ fontWeight: "bold" }}>Actors :</span>{" "}
