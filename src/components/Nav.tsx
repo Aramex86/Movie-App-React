@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -15,7 +15,10 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 
+import Test from './SearchResult';
+
 import {Link} from 'react-router-dom';
+import { getMoviesApi } from "../api/ApiCalls";
 
 const useStyles = makeStyles((theme: any) => ({
   grow: {
@@ -83,8 +86,22 @@ const useStyles = makeStyles((theme: any) => ({
 
 const PrimarySearchAppBar = () => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [value,setValue]=useState('');
+  const [searchResult,setSearchResult]=useState([])
+
+  useEffect(()=>{
+    const fetchResult=async(movieSearch:string)=>{
+        const result=await getMoviesApi.getSearch(movieSearch);
+        //console.log(result);
+        setSearchResult(result);
+    }
+    fetchResult(value);
+  },[value])
+  
+
+ //console.log(value)
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -105,6 +122,11 @@ const PrimarySearchAppBar = () => {
   const handleMobileMenuOpen = (event: any) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const handeleSeacrch=(e:any)=>{
+    setValue(e.target.value);
+  }
+
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -189,6 +211,8 @@ const PrimarySearchAppBar = () => {
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
+              value={value}
+              onChange={handeleSeacrch}
             />
           </div>
           <div className={classes.grow} />
@@ -229,6 +253,7 @@ const PrimarySearchAppBar = () => {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      <Test res={searchResult} value={value}/>
     </div>
   );
 };

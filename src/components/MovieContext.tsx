@@ -43,11 +43,12 @@ export const GenreContext = createContext<IGenreContext>([[], () => null]);
 export const MovieProvider = (props: { children: any }) => {
   const [movies, setMovie] = useState<IMovie[]>([]);
 
+  
   useEffect(() => {
     const fetchDataMovies = async () => {
       const result = await getMoviesApi.getMovies();
         setMovie(result.results);
-      //console.log(result);
+     // console.log(result.results);
     };
     fetchDataMovies();
   }, []);
@@ -77,6 +78,4 @@ export const GenreProvider =(props: { children:any })=>{
       {props.children}
     </GenreContext.Provider>
   )
-
-
 }

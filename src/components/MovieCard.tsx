@@ -23,10 +23,10 @@ type ActorsType = {
   profile_path: string;
 };
 
-type GenresTypes={
-  id:number
-  name:string
-}
+type GenresTypes = {
+  id: number;
+  name: string;
+};
 
 //styles
 const divWrapStyle = {
@@ -41,7 +41,7 @@ const movieWrap = {
   display: "flex",
   padding: "2rem 1.5rem",
   color: "#fff",
-  height: "100vh",
+  justifyContent: "center",
 };
 
 const summary = {
@@ -65,25 +65,19 @@ const MovieCard = ({ match }: any) => {
     fetchDataCast(movieId);
   }, [movieId]);
 
-  const genreArr =[...genre];
-  const genreIds =[...moviesId.map(el => Object.values(el.genre_ids)).flat()];
-  const genres:Array<GenresTypes>=[];
+  const genreArr = [...genre];
+  const genreIds = [
+    ...moviesId.map((el) => Object.values(el.genre_ids)).flat(),
+  ];
+  const genres: Array<GenresTypes> = [];
 
-   genreArr.filter(el=>{
-    for(let i=0;i<genreIds.length;i++){
-      if(genreIds[i] === el.id){
+  genreArr.filter((el) => {
+    for (let i = 0; i < genreIds.length; i++) {
+      if (genreIds[i] === el.id) {
         genres.push(el);
       }
     }
   });
-  
-  console.log(genres);
-  
-  console.log('!!!',genreArr);
-  console.log('!!',genreIds);
-  
-  // console.log("MoviesId", moviesId);
-  // console.log('Genre',genre);
 
   return (
     <>
@@ -100,7 +94,7 @@ const MovieCard = ({ match }: any) => {
             >
               <img
                 src={"https://image.tmdb.org/t/p/w500/" + item.poster_path}
-                style={{ objectFit: "cover", width: "100%", height: "65%" }}
+                style={{ height: "80%" }}
                 alt="poster"
               />
             </div>
@@ -111,11 +105,11 @@ const MovieCard = ({ match }: any) => {
               <div style={summary}>
                 <h2>{item.title}</h2>
                 <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
-                  <li style={{padding:'.5rem 0'}}>
+                  <li style={{ padding: ".5rem 0" }}>
                     <span style={{ fontWeight: "bold" }}>Realese date : </span>{" "}
                     {item.release_date}
                   </li>
-                  <li style={{padding:'.5rem 0'}}>
+                  <li style={{ padding: ".5rem 0" }}>
                     <span style={{ fontWeight: "bold" }}>raiting : </span>
                     {item.vote_average}
                     <ThumbUpAltRoundedIcon
@@ -126,13 +120,18 @@ const MovieCard = ({ match }: any) => {
                       }}
                     />
                   </li>
-                  <li style={{padding:'.5rem 0'}}>
+                  <li style={{ padding: ".5rem 0" }}>
                     <span style={{ fontWeight: "bold" }}>total votes : </span>
                     {item.vote_count}
                   </li>
                   {item.adult ? <li>adult:18+</li> : ""}
-                  <li style={{padding:'.5rem 0'}}>
-                    <span style={{ fontWeight: "bold" }}>genre : </span>{genres.map(g=><span key={g.id} style={{marginRight:'10px'}}>{g.name}</span>)}
+                  <li style={{ padding: ".5rem 0" }}>
+                    <span style={{ fontWeight: "bold" }}>genre : </span>
+                    {genres.map((g) => (
+                      <span key={g.id} style={{ marginRight: "10px" }}>
+                        {g.name}
+                      </span>
+                    ))}
                   </li>
                   <li style={{ marginBottom: "20px" }}>
                     <span style={{ fontWeight: "bold" }}>Actors :</span>{" "}

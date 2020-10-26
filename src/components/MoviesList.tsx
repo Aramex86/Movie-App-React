@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState} from "react";
 import { MovieContext } from "./MovieContext";
 import { Link } from "react-router-dom";
 
@@ -9,8 +9,24 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 
 const MoviesList = () => {
-  const [movies, setMovie] = useContext(MovieContext);
+  const[movies, setMovie] = useContext(MovieContext);
+  const[currentPage,setCurrentPage]=useState(1)
+  const[moviePerPage,setMoviePerPage]=useState(10)
+  
+  
+  const indexOfLastMovie = currentPage * moviePerPage;
+  const indexOfFirstMovie = currentPage - moviePerPage;
+  const currenMovies:any=[]
+
+  
+  
+ currenMovies.push([...movies].slice(indexOfFirstMovie,indexOfLastMovie));
+
+  // console.log('CURMOV',currenMovies);
+  // console.log(indexOfFirstMovie);
+  // console.log(indexOfLastMovie);
   //console.log(movies);
+
   return (
     <div
       style={{
@@ -22,7 +38,7 @@ const MoviesList = () => {
         background: "#333",
       }}
     >
-      {movies.map((movie) => (
+      {movies.map((movie: any) => (
         <Card
           key={movie.id}
           style={{ width: "19%", marginBottom: "35px", position: "relative" }}
